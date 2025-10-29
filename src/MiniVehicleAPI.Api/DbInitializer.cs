@@ -10,7 +10,8 @@ public static class DbInitializer
     {
         using var scope = app.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        
+
+        // hier wird die Datenbank migriert und mit Beispieldaten befüllt ( bzw . werden die Änderungen in dem Code mit der Datenbank synchronisiert )
         await db.Database.MigrateAsync();
         
         if (!await db.Vehicles.AnyAsync())
