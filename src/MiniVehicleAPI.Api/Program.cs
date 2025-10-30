@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using MiniVehicleAPI.Application.Vehicles;
 using MiniVehicleAPI.Domain.Abstractions;
 using MiniVehicleAPI.Infrastructure.Data;
 using MiniVehicleAPI.Infrastructure.Repositories;
+using MiniVehicleAPI.Domain.Entities;
+using MiniVehicleAPI.Application.Owners;
+using MiniVehicleAPI.Application.Vehicles;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,10 +14,11 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Dependency Injection
-builder.Services.AddScoped<IRepository<MiniVehicleAPI.Domain.Entities.Vehicle>,
-    EfRepository<MiniVehicleAPI.Domain.Entities.Vehicle>>();
+builder.Services.AddScoped<IRepository<Vehicle>,EfRepository<Vehicle>>();
+builder.Services.AddScoped<IRepository<Owner>, EfRepository<Owner>>();
 
 builder.Services.AddScoped<VehicleService>();
+builder.Services.AddScoped<OwnerService>();
 
 // API + Swagger
 builder.Services.AddControllers();
