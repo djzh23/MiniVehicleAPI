@@ -15,6 +15,11 @@ public class VehiclesController : ControllerBase
     public async Task<ActionResult<IReadOnlyList<VehicleReadDto>>> List()
         => Ok(await _svc.ListAsync());
 
+    [HttpGet("/getAllWithOwner")]
+    public async Task<ActionResult<IReadOnlyList<VehicleReadDto>>> GetAllWithOwners()
+        => Ok(await _svc.GetlAllVehiclesWithOwnersAsync());
+
+
     [HttpGet("{id:int}")]
     public async Task<ActionResult<VehicleReadDto>> Get(int id)
         => (await _svc.GetAsync(id)) is { } dto? Ok(dto) : NotFound();

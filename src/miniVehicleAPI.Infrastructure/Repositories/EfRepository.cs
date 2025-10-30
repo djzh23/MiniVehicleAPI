@@ -21,6 +21,13 @@ public class EfRepository<T> : IRepository<T> where T : class
     public async Task<IReadOnlyList<T>> ListAsync(CancellationToken ct = default)
         => await _set.AsNoTracking().ToListAsync(ct);
 
+    public async Task<IReadOnlyList<T>> GetAllWithOwnersAsync(CancellationToken ct = default)
+    {
+        return await _db.Vehicles
+            .Include( v => v.Owner)
+            .AsNoTracking()
+            .ToListAsync(ct) as List<T>;
+    }
     public async Task AddAsync(T entity, CancellationToken ct = default)
     {
         await _set.AddAsync(entity, ct);

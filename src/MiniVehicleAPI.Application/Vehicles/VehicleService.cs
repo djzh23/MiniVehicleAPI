@@ -22,6 +22,27 @@ public class VehicleService
         return list.Select(Map).ToList();
     }
 
+    public async Task<List<VehicleReadDto>> GetlAllVehiclesWithOwnersAsync(CancellationToken ct = default)
+    {
+        var vehiclesFromDb = await _repo.GetAllWithOwnersAsync(ct);
+
+        // public record VehicleReadDto(int Id, string Make, string Model, int Year, string? Vin, decimal Price, OwnerReadDto? Owner);
+
+        var vehicleDtos = vehiclesFromDb.Select(v => new VehicleReadDto(
+            v.Id,
+            v.Make,
+            v.Model,
+            v.Year,
+            v.Vin,
+            v.Price,
+            // Der ternäre Operator, um Null-Reference Exceptions zu vermeiden
+            v.Owner == null ? null : new OwnerReadDto(v.Owner.Id, v.Owner.Firstname, v.Owner.Lastname)
+        )).ToList();
+
+
+        return vehicleDtos;
+    }
+
     public async Task<int> CreateAsync(VehicleCreateDto dto, CancellationToken ct = default)
     {
         Validate(dto);
@@ -58,7 +79,7 @@ public class VehicleService
         if(dto.Year.HasValue) v.Year = dto.Year.Value;
         if(dto.Vin is not null) v.Vin = string.IsNullOrWhiteSpace(dto.Vin) ? null : dto.Vin.Trim();
         if(dto.Price.HasValue) v.Price = dto.Price.Value;
-        v.UpdateAtUtc = DateTime.UtcNow;
+        v.UpdatedAtUtc = DateTime.UtcNow;
 
         await _repo.UpdateAsync(v, ct);
         await _repo.SaveChangesAsync(ct);
@@ -76,8 +97,16 @@ public class VehicleService
     }
 
     private static VehicleReadDto Map(Vehicle v)
-        => new(v.Id, v.Make, v.Model, v.Year, v.Vin, v.Price);
-    
+        => new VehicleReadDto(
+            v.Id,
+            v.Make,
+            v.Model,
+            v.Year,
+            v.Vin,
+            v.Price,
+            v.Owner is null ? null : new OwnerReadDto(v.Owner.Id, v.Owner.Firstname, v.Owner.Lastname)
+        );
+
     private static void Validate(VehicleCreateDto dto)
     {
         if (string.IsNullOrWhiteSpace(dto.Make) || dto.Make.Length < 2)
