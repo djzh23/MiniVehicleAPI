@@ -1,3 +1,4 @@
+using MiniVehicleAPI.Application.Owners;
 using MiniVehicleAPI.Domain.Abstractions;
 using MiniVehicleAPI.Domain.Entities;
 
