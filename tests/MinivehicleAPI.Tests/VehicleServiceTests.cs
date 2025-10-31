@@ -4,6 +4,7 @@ using MiniVehicleAPI.Domain.Entities;
 using MiniVehicleAPI.Infrastructure.Data;
 using MiniVehicleAPI.Infrastructure.Repositories;
 using FluentAssertions;
+using MinivehicleAPI.Infrastructure.Repositories;
 
 namespace MiniVehicleAPI.Tests;
 
@@ -15,7 +16,7 @@ public class VehicleServiceTests
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         var db = new AppDbContext(opts);
-        var repo = new EfRepository<Vehicle>(db);
+        var repo = new EfVehicleRepository(db);
         return new VehicleService(repo);
     }
     

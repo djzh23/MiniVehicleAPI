@@ -6,9 +6,9 @@ namespace MiniVehicleAPI.Application.Vehicles;
 
 public class VehicleService
 {
-    private readonly IRepository<Vehicle> _repo;
+    private readonly IVehicleRepository _repo;
 
-    public VehicleService(IRepository<Vehicle> repo) => _repo = repo;
+    public VehicleService(IVehicleRepository repo) => _repo = repo;
 
     public async Task<VehicleReadDto?> GetAsync(int id, CancellationToken ct = default)
     {
@@ -25,7 +25,7 @@ public class VehicleService
 
     public async Task<List<VehicleReadDto>> GetlAllVehiclesWithOwnersAsync(CancellationToken ct = default)
     {
-        var vehiclesFromDb = await _repo.GetAllWithOwnersAsync(ct);
+        var vehiclesFromDb = await _repo.GetAllWithOnersAsync(ct);
 
         // public record VehicleReadDto(int Id, string Make, string Model, int Year, string? Vin, decimal Price, OwnerReadDto? Owner);
 
