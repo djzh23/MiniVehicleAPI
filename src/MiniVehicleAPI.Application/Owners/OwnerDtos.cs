@@ -5,7 +5,7 @@ namespace MiniVehicleAPI.Application.Owners;
 
 public record OwnerReadDto(int Id, string Firstname, string Lastname);
 
-// add data notation for validation
+// add data annotation for validation
 public record OwnerCreateDto(
     [Required]
     string Firstname,
