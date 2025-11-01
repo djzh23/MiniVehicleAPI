@@ -12,8 +12,8 @@ public class Vehicle
     public DateTime? UpdatedAtUtc { get; set; }
 
     // Ein Fahrzeug gehört zu genau einem Owner. Die Id kann null sein (wenn das Fahrzeug noch keinen Besitzer hat).
-    public int? OwnerId { get; set; } // Foreign Key zur Owner-Entität
+    public int? CustomerId { get; set; } // Foreign Key zur Owner-Entität
 
     // Die Navigation Property zum Owner-Objekt. Auch diese ist nullable.
-    public Owner? Owner { get; set; }
+    public Customer? Customer { get; set; }
 }

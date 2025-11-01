@@ -15,7 +15,7 @@ public class EfVehicleRepository : EfRepository<Vehicle>, IVehicleRepository
     public async Task<IReadOnlyList<Vehicle>> GetAllWithOnersAsync(CancellationToken ct = default)
     {
         return await _db.Vehicles
-            .Include(v => v.Owner)
+            .Include(v => v.Customer)
             .AsNoTracking()
             .ToListAsync(ct);
     }

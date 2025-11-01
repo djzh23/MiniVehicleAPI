@@ -1,4 +1,4 @@
-using MiniVehicleAPI.Application.Owners;
+using MiniVehicleAPI.Application.Customers;
 using MiniVehicleAPI.Domain.Abstractions;
 using MiniVehicleAPI.Domain.Entities;
 
@@ -37,7 +37,7 @@ public class VehicleService
             v.Vin,
             v.Price,
             // Der ternäre Operator, um Null-Reference Exceptions zu vermeiden
-            v.Owner == null ? null : new OwnerReadDto(v.Owner.Id, v.Owner.Firstname, v.Owner.Lastname)
+            v.Customer == null ? null : new CustomerReadDto(v.Customer.Id, v.Customer.Firstname, v.Customer.Lastname)
         )).ToList();
 
 
@@ -105,7 +105,7 @@ public class VehicleService
             v.Year,
             v.Vin,
             v.Price,
-            v.Owner is null ? null : new OwnerReadDto(v.Owner.Id, v.Owner.Firstname, v.Owner.Lastname)
+            v.Customer is null ? null : new CustomerReadDto(v.Customer.Id, v.Customer.Firstname, v.Customer.Lastname)
         );
 
     private static void Validate(VehicleCreateDto dto)
