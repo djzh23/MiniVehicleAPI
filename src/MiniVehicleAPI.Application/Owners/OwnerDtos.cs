@@ -1,7 +1,20 @@
-﻿namespace MiniVehicleAPI.Application.Owners;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MiniVehicleAPI.Application.Owners;
 
 
 public record OwnerReadDto(int Id, string Firstname, string Lastname);
-public record OwnerCreateDto(string Firstname, string Lastname, string Email, string? Phone);
+
+// add data notation for validation
+public record OwnerCreateDto(
+    [Required]
+    string Firstname,
+    [Required]
+    string Lastname,
+    [Required]
+    [EmailAddress]
+    string Email,
+    [Phone]
+    string? Phone);
 public record OwnerUpdateDto(string? Firstname, string? Lastname, string? Email, string? Phone);
 

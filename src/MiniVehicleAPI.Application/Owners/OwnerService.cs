@@ -38,10 +38,19 @@ public class OwnerService
     }
 
     // Task AddAsync(T entity, CancellationToken ct = default);
-    public async Task<int> CreateOwnerAsync(Owner owner, CancellationToken ct = default)
+    public async Task<int> CreateOwnerAsync(OwnerCreateDto owner, CancellationToken ct = default)
     {
-        await _repo.AddAsync(owner, ct);
+        // add validation to the ownerCreateDto ( data validation )
+        // map OwnerCreateDto to Owner entity
+        var ownerEntity = new Owner
+        {
+            Firstname = owner.Firstname,
+            Lastname = owner.Lastname,
+            Email = owner.Email,
+            Phone = owner.Phone
+        };
+        await _repo.AddAsync(ownerEntity, ct);
         await _repo.SaveChangesAsync(ct);
-        return owner.Id;
+        return ownerEntity.Id;
     }
 }

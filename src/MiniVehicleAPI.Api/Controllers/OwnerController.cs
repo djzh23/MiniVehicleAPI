@@ -25,5 +25,12 @@ public class OwnerController : ControllerBase
     }
 
 
+    [HttpPost]
+    public async Task<ActionResult> Create([FromBody] OwnerCreateDto dto)
+    {
+        var id = await _svc.CreateOwnerAsync(dto);
+        return CreatedAtAction(nameof(Get), new { id }, null);
+    }
+
 
 }
