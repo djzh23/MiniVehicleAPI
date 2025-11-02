@@ -6,9 +6,27 @@ namespace MiniVehicleAPI.Application.Customers;
 public class CustomerService
 {
     // repository injection
-    private readonly IRepository<Customer> _repo;
+    private readonly ICustomerRepository _repo;
 
-    public CustomerService(IRepository<Customer> repository) => _repo = repository;
+    public CustomerService(ICustomerRepository repository) => _repo = repository;
+
+    // Task UpdateAsync(T entity, CancellationToken ct = default);
+    // Task<T?> GetByIdAsync(int id, CancellationToken ct = default);
+    public async Task<bool> UpdateCustomer(int id, CustomerUpdateDto updateDto, CancellationToken ct = default)
+    {
+        var customerToUpdate = await _repo.GetByIdAsync(id, ct);
+        if (customerToUpdate == null) return false;
+
+        customerToUpdate.Firstname = updateDto.Firstname;
+        customerToUpdate.Lastname = updateDto.Lastname;
+        customerToUpdate.Phone = updateDto.Phone;
+        customerToUpdate.Email = updateDto.Email;
+
+        //await _repo.UpdateAsync(customerToUpdate);
+        await _repo.SaveChangesAsync(ct);
+
+        return true;
+    }
 
     // GetByIdAsync From IRepository interface ( _repo ) 
     // Task<T?> GetByIdAsync(int id, CancellationToken ct = default);
@@ -37,11 +55,39 @@ public class CustomerService
         return ownerDto;
     }
 
+
+    //     public async Task<IReadOnlyList<T>> ListAsync(CancellationToken ct = default)
+    //      => await _set.AsNoTracking().ToListAsync(ct);
+    public async Task<IReadOnlyList<CustomerReadDto>> GetListAsync(CancellationToken ct = default)
+    {
+        var customerEntities = await _repo.ListAsync(ct);
+
+        if(customerEntities == null || !customerEntities.Any())
+        {
+            return Array.Empty<CustomerReadDto>();
+        }
+
+        var customerDtos = customerEntities.Select(customer => new CustomerReadDto(
+            Id: customer.Id,
+            Firstname: customer.Firstname,
+            Lastname: customer.Lastname
+        )).ToList();
+
+        return customerDtos;
+    }
+
     // Task AddAsync(T entity, CancellationToken ct = default);
     public async Task<int> CreateCustomerAsync(CustomerCreateDto customer, CancellationToken ct = default)
     {
         // add validation to the ownerCreateDto ( data validation )
         // map OwnerCreateDto to Owner entity
+
+        // check if email already exists
+        if(_repo.ExistByEmailAsync(customer.Email, ct).Result)
+        {
+            throw new InvalidOperationException("A customer with this email address already exists.");
+        }
+
         var customerEntity = new Customer
         {
             Firstname = customer.Firstname,
@@ -49,8 +95,25 @@ public class CustomerService
             Email = customer.Email,
             Phone = customer.Phone
         };
+
         await _repo.AddAsync(customerEntity, ct);
         await _repo.SaveChangesAsync(ct);
+
         return customerEntity.Id;
     }
+
+    //  Task DeleteAsync(T entity, CancellationToken ct = default);
+    public async Task<bool> DeleteCustomerAsync(int id, CancellationToken ct = default)
+    {
+
+        var customerToDelete = await _repo.GetByIdAsync(id, ct);
+        if (customerToDelete == null) return false;
+
+        await _repo.DeleteAsync(customerToDelete, ct);
+        await _repo.SaveChangesAsync(ct);
+        return true;
+
+    }
+
+
 }

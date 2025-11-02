@@ -46,6 +46,11 @@ public class EfRepository<T> : IRepository<T> where T : class
         // Don't save automatically - let the service layer handle transactions
     }
 
+    public async Task<bool> ExistAsync(T obj, CancellationToken ct = default)
+    {
+        return await _set.ContainsAsync(obj, ct);
+    }
+
     public async Task SaveChangesAsync(CancellationToken ct = default)
     {
         await _db.SaveChangesAsync(ct);

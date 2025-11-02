@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MiniVehicleAPI.Domain.Abstractions;
 using MiniVehicleAPI.Infrastructure.Data;
-using MiniVehicleAPI.Infrastructure.Repositories;
-using MiniVehicleAPI.Domain.Entities;
 using MiniVehicleAPI.Application.Customers;
 using MiniVehicleAPI.Application.Vehicles;
 using MinivehicleAPI.Infrastructure.Repositories;
@@ -16,7 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 // Dependency Injection
 builder.Services.AddScoped<IVehicleRepository,EfVehicleRepository>();
-builder.Services.AddScoped<IRepository<Customer>, EfRepository<Customer>>();
+builder.Services.AddScoped<ICustomerRepository, EfCustomerRepository>();
 
 builder.Services.AddScoped<VehicleService>();
 builder.Services.AddScoped<CustomerService>();
