@@ -23,8 +23,7 @@ public class CustomersController : ControllerBase
     public async Task<ActionResult<List<CustomerReadDto>>> GetAll()
     {
         var dtos = await _svc.GetListAsync();
-        if (dtos.Count == 0) return NoContent(); // 204
-        return Ok(dtos); // 200
+        return Ok(dtos); // 200 or [] with empty body when no customers
     }
 
     [HttpPost]
