@@ -32,17 +32,18 @@ public class CustomersController : ControllerBase
         try
         {
             var newId = await _svc.CreateCustomerAsync(dto);
-            return CreatedAtAction(nameof(Get), new { newId }, null); // 201
+            return CreatedAtAction(nameof(Get), new { id = newId }, null); // 201
         }
         catch (Exception ex)
         {
-            return Conflict(ex.Message); // 409
+            return Conflict(ex.Message); // 4099
         }     
     }
 
     [HttpPut("{id:int}")]
     public async Task<ActionResult<CustomerUpdateDto>> Update(int id, CustomerUpdateDto customerFromClient)
     {
+        
         // 400 ( asp.net core does this automaticall, when Annotation validation fails) 
         bool wasUpdated = await _svc.UpdateCustomer(id, customerFromClient);
         if (!wasUpdated) return NotFound(); // 404
