@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MiniVehicleAPI.Domain.Abstractions;
 using MiniVehicleAPI.Infrastructure.Data;
+using System.Linq.Expressions;
 
 namespace MiniVehicleAPI.Infrastructure.Repositories;
 
@@ -21,38 +22,34 @@ public class EfRepository<T> : IRepository<T> where T : class
     public async Task<IReadOnlyList<T>> ListAsync(CancellationToken ct = default)
         => await _set.AsNoTracking().ToListAsync(ct);
 
-    //public async Task<IReadOnlyList<T>> GetAllWithOwnersAsync(CancellationToken ct = default)
-    //{
-    //    return await _db.Vehicles
-    //        .Include( v => v.Owner)
-    //        .AsNoTracking()
-    //        .ToListAsync(ct) as List<T>;
-    //}
-    public async Task AddAsync(T entity, CancellationToken ct = default)
+    public async Task<IReadOnlyList<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default)
+        => await _set.AsNoTracking().Where(predicate).ToListAsync(ct);
+
+    public Task AddAsync(T entity, CancellationToken ct = default)
     {
-        await _set.AddAsync(entity, ct);
-        // Don't save automatically - let the service layer handle transactions
+        return _set.AddAsync(entity, ct).AsTask();
     }
 
-    public async Task UpdateAsync(T entity, CancellationToken ct = default)
+    public Task UpdateAsync(T entity, CancellationToken ct = default)
     {
         _set.Update(entity);
-        // Don't save automatically - let the service layer handle transactions
+        return Task.CompletedTask; // Operation is synchronous, but returns a task
     }
 
-    public async Task DeleteAsync(T entity, CancellationToken ct = default)
+    public Task DeleteAsync(T entity, CancellationToken ct = default)
     {
+        _db.Entry(entity).State = EntityState.Deleted;
         _set.Remove(entity);
-        // Don't save automatically - let the service layer handle transactions
+        return Task.CompletedTask;
     }
 
-    public async Task<bool> ExistAsync(T obj, CancellationToken ct = default)
+    public async Task<bool> ExistAsync(int id, CancellationToken ct = default)
     {
-        return await _set.ContainsAsync(obj, ct);
+        return await _set.FindAsync(new object?[] { id }, ct) != null;
     }
 
-    public async Task SaveChangesAsync(CancellationToken ct = default)
+    public async Task<int> SaveChangesAsync(CancellationToken ct = default)
     {
-        await _db.SaveChangesAsync(ct);
+        return await _db.SaveChangesAsync(ct);
     }
 }

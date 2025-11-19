@@ -10,8 +10,6 @@ public class CustomerService
 
     public CustomerService(ICustomerRepository repository) => _repo = repository;
 
-    // Task UpdateAsync(T entity, CancellationToken ct = default);
-    // Task<T?> GetByIdAsync(int id, CancellationToken ct = default);
     public async Task<bool> UpdateCustomer(int id, CustomerUpdateDto updateDto, CancellationToken ct = default)
     {
         var customerToUpdate = await _repo.GetByIdAsync(id, ct);
@@ -22,25 +20,19 @@ public class CustomerService
         customerToUpdate.Phone = updateDto.Phone;
         customerToUpdate.Email = updateDto.Email;
 
-        //await _repo.UpdateAsync(customerToUpdate);
         await _repo.SaveChangesAsync(ct);
 
         return true;
     }
 
-    // GetByIdAsync From IRepository interface ( _repo ) 
-    // Task<T?> GetByIdAsync(int id, CancellationToken ct = default);
     public async Task<CustomerReadDto?> GetAsync(int id, CancellationToken ct = default)
     {
-        //OwnerReadDto owner = await _repo.GetByIdAsync(id, ct);
         // get owner from repository
         Customer? customerEntity = await _repo.GetByIdAsync(id, ct);
 
         // check if the owner is null 
-        // return null and logging ...
         if (customerEntity == null)
         {
-            // Optional: _logger.LogWarning("Owner with ID {Id} not found.", id);
             return null;
         }
 
@@ -51,13 +43,9 @@ public class CustomerService
             Lastname: customerEntity.Lastname
         );
 
-        // return OwnerReadDto
         return ownerDto;
     }
 
-
-    //     public async Task<IReadOnlyList<T>> ListAsync(CancellationToken ct = default)
-    //      => await _set.AsNoTracking().ToListAsync(ct);
     public async Task<IReadOnlyList<CustomerReadDto>> GetListAsync(CancellationToken ct = default)
     {
         var customerEntities = await _repo.ListAsync(ct);
@@ -76,12 +64,8 @@ public class CustomerService
         return customerDtos;
     }
 
-    // Task AddAsync(T entity, CancellationToken ct = default);
     public async Task<int> CreateCustomerAsync(CustomerCreateDto customer, CancellationToken ct = default)
     {
-        // add validation to the ownerCreateDto ( data validation )
-        // map OwnerCreateDto to Owner entity
-
         // check if email already exists
         if(_repo.ExistByEmailAsync(customer.Email, ct).Result)
         {
@@ -102,7 +86,6 @@ public class CustomerService
         return customerEntity.Id;
     }
 
-    //  Task DeleteAsync(T entity, CancellationToken ct = default);
     public async Task<bool> DeleteCustomerAsync(int id, CancellationToken ct = default)
     {
 
@@ -114,6 +97,5 @@ public class CustomerService
         return true;
 
     }
-
 
 }

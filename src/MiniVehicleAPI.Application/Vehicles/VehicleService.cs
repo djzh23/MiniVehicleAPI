@@ -16,7 +16,6 @@ public class VehicleService
         return v is null ? null : Map(v);
     }
     
-
     public async Task<IReadOnlyList<VehicleReadDto>> ListAsync(CancellationToken ct = default)
     {
         var list = await _repo.ListAsync(ct);
@@ -27,8 +26,6 @@ public class VehicleService
     {
         var vehiclesFromDb = await _repo.GetAllWithOnersAsync(ct);
 
-        // public record VehicleReadDto(int Id, string Make, string Model, int Year, string? Vin, decimal Price, OwnerReadDto? Owner);
-
         var vehicleDtos = vehiclesFromDb.Select(v => new VehicleReadDto(
             v.Id,
             v.Make,
@@ -36,7 +33,6 @@ public class VehicleService
             v.Year,
             v.Vin,
             v.Price,
-            // Der ternäre Operator, um Null-Reference Exceptions zu vermeiden
             v.Customer == null ? null : new CustomerReadDto(v.Customer.Id, v.Customer.Firstname, v.Customer.Lastname)
         )).ToList();
 

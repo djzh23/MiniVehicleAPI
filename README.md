@@ -1,113 +1,53 @@
 # MiniVehicleAPI
 
-Eine moderne Vehicle API mit Clean Architecture, Entity Framework Core und PostgreSQL.
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/djzh23/MiniVehicleAPI/actions)
+[![.NET](https://img.shields.io/badge/.NET-9.0-purple.svg)](https://dotnet.microsoft.com/download/dotnet/9.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🏗️ Architektur
+A robust and modern REST API for vehicle management, built with **Clean Architecture** and **.NET 9**.
 
-- **API Layer**: ASP.NET Core Web API mit Swagger
-- **Application Layer**: Business Logic und Services
-- **Domain Layer**: Entities und Abstractions
-- **Infrastructure Layer**: Entity Framework Core und PostgreSQL
-- **Tests**: Unit Tests mit xUnit und FluentAssertions
+---
 
-## 🌳 Branching Strategy
+## 🚀 Live Demo
 
-### Branches
+**This is where your screenshot goes! A picture is worth a thousand words.**
 
-- **`master`**: Produktionsreifer Code (nur über Pull Requests)
-- **`development`**: Hauptentwicklungsbranch (für Features)
-- **`feature/*`**: Feature-Branches (z.B. `feature/user-authentication`)
-- **`bugfix/*`**: Bugfix-Branches (z.B. `bugfix/vin-validation`)
-- **`hotfix/*`**: Kritische Hotfixes (z.B. `hotfix/security-patch`)
+*   **How to do it:** Run your API with Docker (`docker-compose up`), navigate to `http://localhost:5001/swagger`, and take a screenshot.
 
-### Workflow
+## 🚀 Live Demo
+- ##### create a vehicle
+![GIF showing how to create a vehicle with Swagger](assets/images/create-customer-demo.gif)
 
-1. **Feature entwickeln:**
-   ```bash
-   git checkout development
-   git pull origin development
-   git checkout -b feature/neue-funktion
-   # Entwickeln...
-   git add .
-   git commit -m "Add: Neue Funktion implementiert"
-   git push origin feature/neue-funktion
-   ```
+---
 
-2. **Pull Request erstellen:**
-   - Gehen Sie zu GitHub
-   - Erstellen Sie einen Pull Request von `feature/neue-funktion` → `development`
+## ✨ Core Features
 
-3. **Nach Merge:**
-   ```bash
-   git checkout development
-   git pull origin development
-   git branch -d feature/neue-funktion
-   ```
+This project goes beyond simple CRUD operations to showcase industry best practices and advanced architectural concepts.
 
-## 🚀 Setup
+-   🏗️ **Scalable Architecture:** Built on **Clean Architecture** principles to ensure long-term maintainability, testability, and a clear separation of concerns.
+-   🚀 **High-Performance Core:** Powered by **.NET 9** framework, delivering exceptional performance and access to modern C# features.
+-   🗄️ **Robust Data Persistence:** Utilizes **Entity Framework Core** with a reliable **PostgreSQL** database for efficient and secure data management.
+-   ✅ **Quality Assured:** Features a comprehensive suite of **unit tests** to guarantee code correctness and prevent regressions.
+-   🐳 **Seamless Deployment:** Fully containerized with **Docker** and Docker Compose for a consistent, one-command setup in any environment.
+-   🔍 **Intelligent Validation:** Implements smart validation logic, including unique checks for Vehicle Identification Numbers (VINs), to enforce data integrity at the API level.
 
-### Voraussetzungen
-- .NET 9.0 SDK
-- PostgreSQL
-- Visual Studio 2022 oder VS Code
+---
 
-### Installation
+## 🛠️ Tech Stack
+
+![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white)
+[![.NET](https://img.shields.io/badge/.NET-9.0-5C2D91?style=for-the-badge&logo=.net&logoColor=white)](https://dotnet.microsoft.com/download/dotnet/9.0)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+
+---
+
+## 🏁 Quick Start
+
+Clone the repository and launch the entire application (including the database) with Docker Compose.
+
 ```bash
 git clone https://github.com/djzh23/MiniVehicleAPI.git
 cd MiniVehicleAPI
-dotnet restore
-dotnet build
+docker-compose up --build
 ```
-
-### Datenbank Setup
-```bash
-dotnet ef database update --project src/miniVehicleAPI.Infrastructure --startup-project src/MiniVehicleAPI.Api
-```
-
-### Starten
-```bash
-dotnet run --project src/MiniVehicleAPI.Api
-```
-
-## 📊 API Endpoints
-
-- `GET /api/vehicles` - Alle Fahrzeuge abrufen
-- `GET /api/vehicles/{id}` - Einzelnes Fahrzeug abrufen
-- `POST /api/vehicles` - Neues Fahrzeug erstellen
-- `PUT /api/vehicles/{id}` - Fahrzeug aktualisieren
-- `DELETE /api/vehicles/{id}` - Fahrzeug löschen
-
-## 🧪 Tests
-
-```bash
-dotnet test tests/MinivehicleAPI.Tests/
-```
-
-## 📝 Features
-
-- ✅ Clean Architecture
-- ✅ Entity Framework Core 9.0
-- ✅ PostgreSQL Integration
-- ✅ VIN-Validierung mit Duplikat-Prüfung
-- ✅ Swagger/OpenAPI Dokumentation
-- ✅ Unit Tests
-- ✅ Automatische Datenbankinitialisierung
-- ✅ Transaktionsmanagement
-
-## 🔧 Entwicklung
-
-### Neue Features hinzufügen
-1. Erstellen Sie einen Feature-Branch von `development`
-2. Entwickeln Sie die Funktionalität
-3. Schreiben Sie Tests
-4. Erstellen Sie einen Pull Request
-
-### Code Standards
-- Verwenden Sie aussagekräftige Commit-Messages
-- Schreiben Sie Tests für neue Features
-- Folgen Sie der Clean Architecture
-- Dokumentieren Sie wichtige Änderungen
-
-## 📄 Lizenz
-
-MIT License

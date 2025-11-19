@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MiniVehicleAPI.Application.Vehicles;
-using MiniVehicleAPI.Domain.Entities;
 using MiniVehicleAPI.Infrastructure.Data;
-using MiniVehicleAPI.Infrastructure.Repositories;
 using FluentAssertions;
 using MinivehicleAPI.Infrastructure.Repositories;
 
