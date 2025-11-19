@@ -8,15 +8,10 @@ A robust and modern REST API for vehicle management, built with **Clean Architec
 
 ---
 
-## 🚀 Live Demo
+## 🚀 Live Demo 
 
-**This is where your screenshot goes! A picture is worth a thousand words.**
-
-*   **How to do it:** Run your API with Docker (`docker-compose up`), navigate to `http://localhost:5001/swagger`, and take a screenshot.
-
-## 🚀 Live Demo
-- ##### create a vehicle
-![GIF showing how to create a vehicle with Swagger](assets/images/create-customer-demo.gif)
+- ##### create a customer / get customers
+![GIF showing how to create a customer with Swagger](assets/images/create-customer-demo.gif)
 
 ---
 
